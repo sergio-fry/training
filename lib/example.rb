@@ -12,6 +12,10 @@ class Example
     @solved_time = time
   end
 
+  def success?
+    @solved_time <= 6
+  end
+
   def failed
     @solved_time = 100
   end

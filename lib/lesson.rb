@@ -12,24 +12,35 @@ class Lesson
   end
 
   def next_example
-    @examples.sort_by(&:solved_time).reverse[0..10].sample
+    result = @examples.sort_by(&:solved_time).reverse[0..10].sample
+    
+    if left > 1 && @current == result
+      next_example
+    else
+      result
+    end
   end
 
   def start
     reader = TTY::Reader.new
 
-    loop do
+    until @examples.empty? do
       print current
       @start = Time.now
 
       if current.solution == read_solution
-        puts ""
-        puts "#{left}"
-
         current.solved_during(Time.now.to_f - @start.to_f)
+        puts "    #{left}"
+
+        if current.success?
+          Thread.new { `sayme молодец` }
+          @examples.delete current
+        end
       else
-        puts " WRONG"
-        puts "#{current}#{current.solution}"
+        print "    ERR"
+        puts
+        Thread.new { `sayme ошибка` }
+        # puts "#{current}#{current.solution}"
         current.failed
       end
 
@@ -37,9 +48,7 @@ class Lesson
     end
   end
 
-  def left
-    "#{@examples.reject { |ex| ex.solved_time < 4 }.size}/#{@examples.size}"
-  end
+  def left = @examples.size
 
   def read_solution
     reader = TTY::Reader.new
