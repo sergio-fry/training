@@ -5,7 +5,6 @@ RSpec.describe '' do
   example do
     lesson = Lesson.new
     
-
-    puts lesson.next_example
+    lesson.next_example
   end
 end

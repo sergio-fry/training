@@ -9,8 +9,16 @@ class Example
   end
 
   def solved_during(time)
-    Example.new(@a, @b, solved_time: time)
+    @solved_time = time
   end
 
-  def to_s = "#{@a} x #{@b}="
+  def failed
+    @solved_time = 100
+  end
+  
+  def to_s = "#{@a} x #{@b} = "
+
+  def solution
+    @a * @b
+  end
 end

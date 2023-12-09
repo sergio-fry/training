@@ -1,3 +1,5 @@
+require 'example'
+
 class Examples
   def all
     arr = []
