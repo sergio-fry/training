@@ -24,6 +24,8 @@ class Lesson
 
       if current.solution == read_solution
         puts ""
+        puts "#{left}"
+
         current.solved_during(Time.now.to_f - @start.to_f)
       else
         puts " WRONG"
@@ -33,6 +35,10 @@ class Lesson
 
       @current = next_example
     end
+  end
+
+  def left
+    "#{@examples.reject { |ex| ex.solved_time < 4 }.size}/#{@examples.size}"
   end
 
   def read_solution
