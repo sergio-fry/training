@@ -4,7 +4,7 @@ require 'tty/reader'
 
 class Lesson
   def initialize
-    @examples = Examples.new.all
+    @examples = Examples.new.all.sort_by { rand }
   end
 
   def current
@@ -30,19 +30,17 @@ class Lesson
 
       if current.solution == read_solution
         current.solved_during(Time.now.to_f - @start.to_f)
-        puts "    #{left}"
 
         if current.success?
-          Thread.new { `sayme молодец` }
           @examples.delete current
+          report_success
         end
       else
-        print "    ERR"
-        puts
-        Thread.new { `sayme ошибка` }
+        Thread.new { `sayme ой` }
         # puts "#{current}#{current.solution}"
         current.failed
       end
+      puts
 
       @current = next_example
     end
@@ -62,5 +60,9 @@ class Lesson
 
 
     chars.join.to_i
+  end
+
+  def report_success
+    print " " * 10 + left.to_s
   end
 end
