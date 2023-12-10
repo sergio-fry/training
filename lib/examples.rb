@@ -2,13 +2,15 @@
 
 require 'example'
 require 'multiplication'
+require 'division'
 
 class Examples
   def all
     arr = []
-    (1..2).each do |a|
-      (1..1).each do |b|
+    (2..9).each do |a|
+      (2..9).each do |b|
         arr << Example.new(Multiplication.new(a, b))
+        # arr << Example.new(Division.new(a * b, a))
       end
     end
 
