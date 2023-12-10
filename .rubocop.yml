@@ -9,5 +9,11 @@
 #
 # See https://docs.rubocop.org/rubocop/configuration
 
+require:
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+
 Style/Documentation:
   Enabled: false

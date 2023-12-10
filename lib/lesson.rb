@@ -6,6 +6,7 @@ require 'tty/reader'
 class Lesson
   def initialize
     @examples = Examples.new.all.sort_by { rand }
+    @errors = 0
   end
 
   def current
@@ -23,20 +24,13 @@ class Lesson
   end
 
   def start
-    TTY::Reader.new
     @lesson_start = Time.now
-    @errors = 0
 
     until @examples.empty?
       print current
       @example_start = Time.now
 
-      if try_to_solve
-        mark_solved
-      else
-        mark_failed
-      end
-      puts
+      try_to_solve
 
       @current = next_example
     end
@@ -54,7 +48,15 @@ class Lesson
     puts "Time: #{(Time.now - @lesson_start).round}s"
   end
 
-  def try_to_solve = current.solution == read_solution
+  def try_to_solve
+    if check_solution
+      mark_solved
+    else
+      mark_failed
+    end
+  end
+
+  def check_solution = current.solution == read_solution
 
   def mark_solved
     current.solved_during(Time.now - @example_start)
@@ -69,6 +71,7 @@ class Lesson
     Thread.new { `sayme ой` }
     # puts "#{current}#{current.solution}"
     current.failed
+    puts
     @errors += 1
   end
 
@@ -88,6 +91,6 @@ class Lesson
   end
 
   def report_success
-    print ' ' * 10 + left.to_s
+    puts (' ' * 10) + left.to_s
   end
 end

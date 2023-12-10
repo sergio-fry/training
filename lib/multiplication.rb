@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class Multiplication
-  def initialize(a, b)
-    @a = a
-    @b = b
+  def initialize(multiplier, multiplicand)
+    @multiplier = multiplier
+    @multiplicand = multiplicand
   end
 
-  def to_s = "#{@a} x #{@b} = "
+  def to_s = "#{@multiplier} x #{@multiplicand} = "
 
   def solution
-    @a * @b
+    @multiplier * @multiplicand
   end
 end
