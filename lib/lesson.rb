@@ -41,6 +41,10 @@ class Lesson
       @current = next_example
     end
 
+    display_report
+  end
+
+  def display_report
     if @errors.positive?
       puts "Errors: #{@errors}"
     else

@@ -5,7 +5,7 @@ class Example
 
   def initialize(problem)
     @problem = problem
-    @solved_time = solved_time
+    @solved_time = 100
   end
 
   def solved_during(time)
