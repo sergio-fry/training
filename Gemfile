@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "rspec"
-gem "tty-reader"
+gem 'rspec'
+gem 'tty-reader'
+
+gem 'rubocop'

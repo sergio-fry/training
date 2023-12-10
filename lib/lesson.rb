@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 require 'examples'
 require 'tty/reader'
-
 
 class Lesson
   def initialize
@@ -13,7 +14,7 @@ class Lesson
 
   def next_example
     result = @examples.sort_by(&:solved_time).reverse[0..10].sample
-    
+
     if left > 1 && @current == result
       next_example
     else
@@ -22,39 +23,49 @@ class Lesson
   end
 
   def start
-    reader = TTY::Reader.new
+    TTY::Reader.new
     @lesson_start = Time.now
     @errors = 0
 
-    until @examples.empty? do
+    until @examples.empty?
       print current
-      @start = Time.now
+      @example_start = Time.now
 
-      if current.solution == read_solution
-        current.solved_during(Time.now.to_f - @start.to_f)
-
-        if current.success?
-          @examples.delete current
-          report_success
-        end
+      if try_to_solve
+        mark_solved
       else
-        Thread.new { `sayme ой` }
-        # puts "#{current}#{current.solution}"
-        current.failed
-        @errors += 1
+        mark_failed
       end
       puts
 
       @current = next_example
     end
 
-    if @errors > 0
+    if @errors.positive?
       puts "Errors: #{@errors}"
     else
-      puts "No errors!"
+      puts 'No errors!'
     end
 
     puts "Time: #{(Time.now - @lesson_start).round}s"
+  end
+
+  def try_to_solve = current.solution == read_solution
+
+  def mark_solved
+    current.solved_during(Time.now - @example_start)
+
+    return unless current.success?
+
+    @examples.delete current
+    report_success
+  end
+
+  def mark_failed
+    Thread.new { `sayme ой` }
+    # puts "#{current}#{current.solution}"
+    current.failed
+    @errors += 1
   end
 
   def left = @examples.size
@@ -69,11 +80,10 @@ class Lesson
       print chars.last
     end
 
-
     chars.join.to_i
   end
 
   def report_success
-    print " " * 10 + left.to_s
+    print ' ' * 10 + left.to_s
   end
 end
