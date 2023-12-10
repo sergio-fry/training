@@ -61,10 +61,12 @@ class Lesson
   def mark_solved
     current.solved_during(Time.now - @example_start)
 
-    return unless current.success?
+    if current.success?
+      @examples.delete current
+      report_success
+    end
 
-    @examples.delete current
-    report_success
+    puts
   end
 
   def mark_failed
@@ -91,6 +93,6 @@ class Lesson
   end
 
   def report_success
-    puts (' ' * 10) + left.to_s
+    print (' ' * 10) + left.to_s
   end
 end
