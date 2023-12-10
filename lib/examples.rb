@@ -10,10 +10,10 @@ class Examples
     (2..9).each do |a|
       (2..9).each do |b|
         arr << Example.new(Multiplication.new(a, b))
-        # arr << Example.new(Division.new(a * b, a))
+        arr << Example.new(Division.new(a * b, a))
       end
     end
 
-    arr
+    arr.sort_by { rand }.take(20)
   end
 end
