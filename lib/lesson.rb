@@ -23,6 +23,8 @@ class Lesson
 
   def start
     reader = TTY::Reader.new
+    @lesson_start = Time.now
+    @errors = 0
 
     until @examples.empty? do
       print current
@@ -39,11 +41,20 @@ class Lesson
         Thread.new { `sayme ой` }
         # puts "#{current}#{current.solution}"
         current.failed
+        @errors += 1
       end
       puts
 
       @current = next_example
     end
+
+    if @errors > 0
+      puts "Errors: #{@errors}"
+    else
+      puts "No errors!"
+    end
+
+    puts "Time: #{(Time.now - @lesson_start).round}s"
   end
 
   def left = @examples.size
